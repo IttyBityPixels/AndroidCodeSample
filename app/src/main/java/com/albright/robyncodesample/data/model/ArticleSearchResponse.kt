@@ -12,8 +12,8 @@ data class ArticleSearchResponse(
 data class ArticleSnippet(
     val uri: String,
     val url: String,
-    val id: Int,
-    @SerializedName("asset_id") val assetId: Int,
+    val id: Long,
+    @SerializedName("asset_id") val assetId: Long,
     val source: String,
     @SerializedName("published_date") val publishedDate: String,
     val updated: String,
