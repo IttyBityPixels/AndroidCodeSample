@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.albright.robyncodesample.databinding.FragmentImageBinding
+import com.bumptech.glide.Glide
 
 private const val ARG_IMAGE_URL = "imageUrl"
 
@@ -34,8 +35,14 @@ class ImageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // TODO:
-        //  load image with glide
         //  if load fails, show placeholder image
+        //  hide progress bar
+
+        Glide.with(this)
+                .load(imageUrl)
+                .error(R.drawable.image_unavailable)
+                .fallback(R.drawable.image_unavailable)
+                .into(binding.imageView)
     }
 
     override fun onDestroyView() {
