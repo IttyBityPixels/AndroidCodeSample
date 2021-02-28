@@ -4,12 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.albright.robyncodesample.api.ArticleSearch
-import com.albright.robyncodesample.data.model.ArticleSearchResult
+import com.albright.robyncodesample.data.model.ArticleSearchResponse
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel : ViewModel() {
-    val articles: MutableLiveData<ArticleSearchResult?> by lazy {
-        MutableLiveData<ArticleSearchResult?>()
+    val articles: MutableLiveData<ArticleSearchResponse?> by lazy {
+        MutableLiveData<ArticleSearchResponse?>()
     }
 
     init {
