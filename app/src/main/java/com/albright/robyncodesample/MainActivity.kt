@@ -3,6 +3,7 @@ package com.albright.robyncodesample
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
                 val pagerAdapter = ImagePagerAdapter(this)
                 binding.imagePager.adapter = pagerAdapter
 
+                createHeadlines()
                 startTimer()
             }
         })
@@ -46,6 +48,22 @@ class MainActivity : AppCompatActivity() {
         timer = null
     }
 
+    private fun createHeadlines() {
+        viewmodel.articles.value?.let {articles ->
+            for (article in articles) {
+                val headline = Headline(this)
+                headline.setHeadline(article.title)
+
+                if (articles.indexOf(article) == articles.lastIndex)
+                    headline.hideDivider()
+
+                binding.headlines.addView(headline)
+            }
+        }
+
+        (binding.headlines.children.elementAt(0) as Headline).addHighlight()
+    }
+
     private fun startTimer() {
         timer = Timer().also {
             it.schedule(ChangeImageTask(), TIMER_INTERVAL, TIMER_INTERVAL)
@@ -55,10 +73,16 @@ class MainActivity : AppCompatActivity() {
     private inner class ChangeImageTask() : TimerTask() {
         override fun run() {
             runOnUiThread {
-                if (binding.imagePager.currentItem == viewmodel.articles.value?.lastIndex)
+                if (binding.imagePager.currentItem == viewmodel.articles.value?.lastIndex) {
                     binding.imagePager.currentItem = 0
-                else
+                    (binding.headlines.children.elementAt(binding.headlines.childCount - 1) as Headline).removeHighlight()
+                    (binding.headlines.children.elementAt(0) as Headline).addHighlight()
+                }
+                else {
                     binding.imagePager.currentItem = binding.imagePager.currentItem + 1
+                    (binding.headlines.children.elementAt(binding.imagePager.currentItem - 1) as Headline).removeHighlight()
+                    (binding.headlines.children.elementAt(binding.imagePager.currentItem) as Headline).addHighlight()
+                }
             }
         }
     }
