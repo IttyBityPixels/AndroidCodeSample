@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.title = resources.getString(R.string.title)
+
         if (savedInstanceState != null) {
             startingHeadline = savedInstanceState.getInt(STARTING_HEADLINE)
         }
@@ -64,11 +66,6 @@ class MainActivity : AppCompatActivity() {
         viewmodel.articles.value?.let {articles ->
             for (article in articles) {
                 val headline = Headline(this)
-
-//                val params = headline.layoutParams as ConstraintLayout.LayoutParams
-//                params.setMargins(0, 8, 0, 0)
-//                headline.layoutParams = params
-
                 headline.setHeadline(article.title)
 
                 if (articles.indexOf(article) == articles.lastIndex)

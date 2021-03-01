@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Robyn Code Sample</string>
+    <string name="title">NY Times Popular Articles</string>
 </resources>
