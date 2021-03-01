@@ -64,6 +64,11 @@ class MainActivity : AppCompatActivity() {
         viewmodel.articles.value?.let {articles ->
             for (article in articles) {
                 val headline = Headline(this)
+
+//                val params = headline.layoutParams as ConstraintLayout.LayoutParams
+//                params.setMargins(0, 8, 0, 0)
+//                headline.layoutParams = params
+
                 headline.setHeadline(article.title)
 
                 if (articles.indexOf(article) == articles.lastIndex)
