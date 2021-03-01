@@ -13,11 +13,13 @@ import com.albright.robyncodesample.viewmodels.MainActivityViewModel
 import java.util.*
 
 private const val TIMER_INTERVAL = 5000L
+private const val STARTING_HEADLINE = "starting_headline"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewmodel: MainActivityViewModel by viewModels()
     private var timer: Timer? = null
+    private var startingHeadline = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,27 +27,37 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewmodel.articles.observe(this, Observer { articles ->
-            // TODO:
-            //  hide progress bar
+        if (savedInstanceState != null) {
+            startingHeadline = savedInstanceState.getInt(STARTING_HEADLINE)
+        }
 
+        viewmodel.articles.observe(this, Observer { articles ->
             if (articles.isNotEmpty()) {
+                createHeadlines()
+
                 val pagerAdapter = ImagePagerAdapter(this)
+
+                (binding.headlines.children.elementAt(startingHeadline) as Headline).addHighlight()
+                binding.imagePager.offscreenPageLimit = articles.size - 1
                 binding.imagePager.adapter = pagerAdapter
 
-                createHeadlines()
                 startTimer()
             }
         })
 
         binding.imagePager.isUserInputEnabled = false
-        binding.imagePager.offscreenPageLimit = 4
     }
 
     override fun onPause() {
         super.onPause()
         timer?.cancel()
         timer = null
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putInt(STARTING_HEADLINE, binding.imagePager.currentItem)
     }
 
     private fun createHeadlines() {
@@ -60,8 +72,6 @@ class MainActivity : AppCompatActivity() {
                 binding.headlines.addView(headline)
             }
         }
-
-        (binding.headlines.children.elementAt(0) as Headline).addHighlight()
     }
 
     private fun startTimer() {
@@ -70,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private inner class ChangeImageTask() : TimerTask() {
+    private inner class ChangeImageTask : TimerTask() {
         override fun run() {
             runOnUiThread {
                 if (binding.imagePager.currentItem == viewmodel.articles.value?.lastIndex) {

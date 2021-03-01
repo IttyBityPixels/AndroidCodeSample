@@ -5,30 +5,27 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.albright.robyncodesample.databinding.HeadlineBinding
 
 class Headline(context: Context) : ConstraintLayout(context) {
-    init {
-        val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.headline, this)
-    }
+    private var binding: HeadlineBinding = HeadlineBinding.inflate(LayoutInflater.from(context), this)
 
     fun setHeadline(headline: String) {
-        findViewById<TextView>(R.id.headlineText).text = headline
+        binding.headlineText.text = headline
     }
 
     fun addHighlight() {
-        findViewById<TextView>(R.id.headlineText).setTextColor(Color.RED)
-        findViewById<TextView>(R.id.headlineText).setTypeface(null, Typeface.BOLD)
+        binding.headlineText.setTextColor(Color.RED)
+        binding.headlineText.setTypeface(null, Typeface.BOLD)
     }
 
     fun removeHighlight() {
-        findViewById<TextView>(R.id.headlineText).setTextColor(Color.BLACK)
-        findViewById<TextView>(R.id.headlineText).setTypeface(null, Typeface.NORMAL)
+        binding.headlineText.setTextColor(Color.BLACK)
+        binding.headlineText.setTypeface(null, Typeface.NORMAL)
     }
 
     fun hideDivider() {
-        findViewById<View>(R.id.divider).visibility = View.GONE
+        binding.divider.visibility = View.GONE
     }
 }

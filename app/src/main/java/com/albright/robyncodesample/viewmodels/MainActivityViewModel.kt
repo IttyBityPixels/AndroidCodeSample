@@ -22,7 +22,7 @@ class MainActivityViewModel : ViewModel() {
                 val response = ArticleSearch.retrofitService.getSevenDayPopularArticles()
 
                 if (response.status == "OK" && response.numResults > 0)
-                    articles.value = response.results.take(10)
+                    articles.value = response.results.take(5)
             } catch (e: Exception) { }
         }
     }
